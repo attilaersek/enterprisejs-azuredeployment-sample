@@ -124,6 +124,14 @@ if [ -e "$DEPLOYMENT_SOURCE/Gruntfile.js" ]; then
   exitWithMessageOnError "grunt failed"
 fi
 
+# 5. Run gulp
+if [ -e "$DEPLOYMENT_SOURCE/gulpfile.js" ]; then
+  eval $NPM_CMD install gulp-cli
+  exitWithMessageOnError "installing gulp failed"
+  ./node_modules/.bin/gulp build
+  exitWithMessageOnError "gulp failed"
+fi
+
 # 5. KuduSync to Target
 if [[ "$IN_PLACE_DEPLOYMENT" -ne "1" ]]; then 
   "$KUDU_SYNC_CMD" -v 50 -f "$DEPLOYMENT_SOURCE" -t "$DEPLOYMENT_TARGET" -n "$NEXT_MANIFEST_PATH" -p "$PREVIOUS_MANIFEST_PATH" -i ".git;.hg;.deployment;deploy.sh" 
