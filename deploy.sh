@@ -116,7 +116,15 @@ if [ -e "$DEPLOYMENT_SOURCE/bower.json" ]; then
   exitWithMessageOnError "bower failed"
 fi
 
-# 4. Run grunt
+# 4. Install typings
+if [ -e "$DEPLOYMENT_SOURCE/typings.json" ]; then
+  eval $NPM_CMD install typings
+  exitWithMessageOnError "installing typings failed"
+  ./node_modules/.bin/typings install
+  exitWithMessageOnError "typings failed"
+fi
+
+# 5. Run grunt
 if [ -e "$DEPLOYMENT_SOURCE/Gruntfile.js" ]; then
   eval $NPM_CMD install grunt-cli
   exitWithMessageOnError "installing grunt failed"
@@ -124,7 +132,7 @@ if [ -e "$DEPLOYMENT_SOURCE/Gruntfile.js" ]; then
   exitWithMessageOnError "grunt failed"
 fi
 
-# 5. Run gulp
+# 6. Run gulp
 if [ -e "$DEPLOYMENT_SOURCE/gulpfile.js" ]; then
   eval $NPM_CMD install gulp-cli
   exitWithMessageOnError "installing gulp failed"
@@ -132,8 +140,8 @@ if [ -e "$DEPLOYMENT_SOURCE/gulpfile.js" ]; then
   exitWithMessageOnError "gulp failed"
 fi
 
-# 5. KuduSync to Target
+# 7. KuduSync to Target
 if [[ "$IN_PLACE_DEPLOYMENT" -ne "1" ]]; then 
-  "$KUDU_SYNC_CMD" -v 50 -f "$DEPLOYMENT_SOURCE" -t "$DEPLOYMENT_TARGET" -n "$NEXT_MANIFEST_PATH" -p "$PREVIOUS_MANIFEST_PATH" -i ".git;.hg;.deployment;deploy.sh" 
+  "$KUDU_SYNC_CMD" -v 50 -f "$DEPLOYMENT_SOURCE/lib" -t "$DEPLOYMENT_TARGET" -n "$NEXT_MANIFEST_PATH" -p "$PREVIOUS_MANIFEST_PATH" -i ".git;.hg;.deployment;deploy.sh;*.d.ts" 
   exitWithMessageOnError "Kudu Sync failed" 
 fi

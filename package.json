@@ -2,10 +2,12 @@
   "name": "enterprisejs-azuredeployment-sample",
   "version": "0.0.1",
   "description": "sample app used to demonstrate continuous deployment processes in azure app services",
-  "main": "server.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "gulp default",
+    "test": "gulp test"
   },
   "repository": {
     "type": "git",
@@ -22,5 +24,35 @@
   "bugs": {
     "url": "https://github.com/retk/enterprisejs-azuredeployment-sample/issues"
   },
-  "homepage": "https://github.com/retk/enterprisejs-azuredeployment-sample"
+  "homepage": "https://github.com/retk/enterprisejs-azuredeployment-sample",
+  "devDependencies": {
+    "browser-sync": "^2.11.2",
+    "del": "2.0.2",
+    "dotbin": "^1.0.1",
+    "dts-generator": "^1.7",
+    "gulp": "^3.9.1",
+    "gulp-help": "^1.6.1",
+    "gulp-inject": "3.0.0",
+    "gulp-jasmine": "^2.3.0",
+    "gulp-mocha": "^2.2.0",
+    "gulp-nodemon": "^2.0.6",
+    "gulp-sequence": "^0.4.5",
+    "gulp-tsconfig-files": "^0.3.0",
+    "gulp-tslint": "^4.3.4",
+    "gulp-typescript": "^2.12.2",
+    "jasmine": "^2.4.1",
+    "mocha": "^2.4.5",
+    "nodemon": "^1.9.1",
+    "tslint": "^3.7.0",
+    "typescript": "^1.8.9"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "cookie-parser": "^1.4.1",
+    "debug": "^2.2.0",
+    "express": "^4.13.4",
+    "mime": "^1.3.4",
+    "morgan": "^1.7.0"
+  },
+  "typings": "./lib/enterprisejs-azuredeployment-sample.d.ts"
 }
