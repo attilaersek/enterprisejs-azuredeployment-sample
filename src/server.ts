@@ -1,11 +1,11 @@
 import {Request, Response} from 'express';
 import express = require('express');
 
-var port: number = process.env.PORT || 3000;
+var port: number = process.env.PORT || 1337;
 var app = express();
 
 var renderIndex = (req: Request, res: Response) => {
-    res.status(200).send('Hello, world!');
+    res.status(200).send('Hello, World!');
 };
 
 app.get('/*', renderIndex);

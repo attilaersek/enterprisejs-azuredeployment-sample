@@ -83,7 +83,7 @@ gulp.task('test', 'Runs the Jasmine test specs', ['build'], function () {
 
 gulp.task('browser-sync', ['nodemon', 'watch'], function () {
     browserSync.init(null, {
-        proxy: "http://localhost:3000",
+        proxy: "http://localhost:1337",
         files: ["src/**/*.*"],
         browser: "google chrome",
         port: 7000,
@@ -114,4 +114,4 @@ gulp.task('watch', 'Watches ts source files and runs build on change', function 
   gulp.watch('src/**/*.ts', ['build']);
 });
 
-gulp.task('default', ['browser-sync']);
+gulp.task('default', gulpSequence('build', 'browser-sync'));
