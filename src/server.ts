@@ -1,16 +1,27 @@
-import {Request, Response} from 'express';
-import express = require('express');
+import { Request, Response} from 'express';
+import { Visitor } from './visitor';
+import * as express from 'express';
 
-var port: number = process.env.PORT || 3000;
-var app = express();
+const app = express();
+const port = process.env.PORT || 1337;
 
-var renderIndex = (req: Request, res: Response) => {
-    res.status(200).send('Hello, world!');
-};
+app.get('/api/products', (req: Request, res: Response) => {
+  const visitor = new Visitor();
+  const ast = Visitor.buildAst(req.query.$filter);
+  res.json({
+    'result': ast
+  });
+});
 
-app.get('/*', renderIndex);
+app.get('/odata/products', (req: Request, res: Response) => {
+  const visitor = new Visitor();
+  const filter = Visitor.buildFilterFunction(req.query.$filter);
 
-var server = app.listen(port, function() {
-    var port = server.address().port;
-    console.log('This express app is listening on port:' + port);
+  res.json({
+    'result': filter.toString()
+  });
+});
+
+app.listen(port, () => {
+    console.log(`service listing in ${port}`);
 });

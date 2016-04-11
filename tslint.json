@@ -33,8 +33,8 @@
     "no-switch-case-fall-through": true,
     "trailing-comma": false,
     "no-trailing-whitespace": false,
-    "no-unused-expression": true,
-    "no-unused-variable": true,
+    "no-unused-expression": false,
+    "no-unused-variable": false,
     "no-unreachable": true,
     "no-use-before-declare": true,
     "one-line": [

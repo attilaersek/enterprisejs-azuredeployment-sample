@@ -16,6 +16,7 @@
   ],
   "files": [
     "src\\server.ts",
+    "src\\visitor.ts",
     "typings\\main.d.ts"
   ]
 }
