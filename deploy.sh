@@ -146,6 +146,6 @@ fi
 echo Kudusync.
 # 7. KuduSync to Target
 if [[ "$IN_PLACE_DEPLOYMENT" -ne "1" ]]; then 
-  "$KUDU_SYNC_CMD" -v 50 -f "$DEPLOYMENT_SOURCE" -t "$DEPLOYMENT_TARGET" -n "$NEXT_MANIFEST_PATH" -p "$PREVIOUS_MANIFEST_PATH" -i ".git;.hg;.deployment;deploy.sh;*.d.ts" 
+  "$KUDU_SYNC_CMD" -v 500 -f "$DEPLOYMENT_SOURCE" -t "$DEPLOYMENT_TARGET" -n "$NEXT_MANIFEST_PATH" -p "$PREVIOUS_MANIFEST_PATH" -i ".git;.hg;.deployment;deploy.sh;*.d.ts" 
   exitWithMessageOnError "Kudu Sync failed" 
 fi

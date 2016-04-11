@@ -13,6 +13,7 @@ var browserSync = require('browser-sync');
 var nodemon = require('gulp-nodemon');
 var cp = require('child_process');
 var typings = require("gulp-typings");
+var zip = require("gulp-zip");
 
 require('dotbin');
 
@@ -64,9 +65,16 @@ gulp.task('compile', 'INTERNAL TASK - Compiles all TypeScript source files', fun
   });
 });
 
+gulp.task('compress', function(cb) {
+	return gulp.src(['**'])
+		.pipe(zip('deployment.zip'))
+		.pipe(gulp.dest('dist'));
+});
+
 //run tslint task, then run update-tsconfig and gen-def in parallel, then run _build
 gulp.task('build', 'Compiles all TypeScript source files and updates module references', gulpSequence('typings', 'tslint', 'update-tsconfig', 'gen-def', 'compile'));
 gulp.task('rebuild', 'Cleans the target folder and builds', gulpSequence('clean', 'build'));
+gulp.task('deploy', 'deploy', gulpSequence('build', 'compress'));
 
 gulp.task('test', 'Runs the Jasmine test specs', ['build'], function () {
   return gulp.src('test/*.js')
