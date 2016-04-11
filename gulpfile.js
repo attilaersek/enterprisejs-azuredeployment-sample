@@ -12,6 +12,7 @@ var dtsGenerator = require('dts-generator');
 var browserSync = require('browser-sync');
 var nodemon = require('gulp-nodemon');
 var cp = require('child_process');
+var typings = require("gulp-typings");
 
 require('dotbin');
 
@@ -48,14 +49,12 @@ gulp.task('gen-def', 'Generate a single .d.ts bundle containing external module 
   });
 });
 
-gulp.task('compile', 'INTERNAL TASK - Compiles all TypeScript source files', function (cb) {
-  exec('tsc --version', function (err, stdout, stderr) {
-    console.log('TypeScript ', stdout);
-    if (stderr) {
-      console.log(stderr);
-    }
-  });
+gulp.task('typings', 'Install typings', function () {
+   return gulp.src("./typings.json")
+     .pipe(typings()); 
+});
 
+gulp.task('compile', 'INTERNAL TASK - Compiles all TypeScript source files', function (cb) {
   return exec('tsc', function (err, stdout, stderr) {
     console.log(stdout);
     if (stderr) {
@@ -66,7 +65,7 @@ gulp.task('compile', 'INTERNAL TASK - Compiles all TypeScript source files', fun
 });
 
 //run tslint task, then run update-tsconfig and gen-def in parallel, then run _build
-gulp.task('build', 'Compiles all TypeScript source files and updates module references', gulpSequence('tslint', ['update-tsconfig', 'gen-def'], 'compile'));
+gulp.task('build', 'Compiles all TypeScript source files and updates module references', gulpSequence('typings', 'tslint', ['update-tsconfig', 'gen-def'], 'compile'));
 gulp.task('rebuild', 'Cleans the target folder and builds', gulpSequence('clean', 'build'));
 
 gulp.task('test', 'Runs the Jasmine test specs', ['build'], function () {
