@@ -97,17 +97,17 @@ selectNodeVersion () {
 # Deployment
 # ----------
 
-echo Handling node.js grunt deployment.
-
 # 1. Select node version
 selectNodeVersion
 
+echo Installing npm packages.
 # 2. Install npm packages
 if [ -e "$DEPLOYMENT_SOURCE/package.json" ]; then
   eval $NPM_CMD install
   exitWithMessageOnError "npm failed"
 fi
 
+echo Installing bower packages.
 # 3. Install bower packages
 if [ -e "$DEPLOYMENT_SOURCE/bower.json" ]; then
   eval $NPM_CMD install bower
@@ -116,6 +116,7 @@ if [ -e "$DEPLOYMENT_SOURCE/bower.json" ]; then
   exitWithMessageOnError "bower failed"
 fi
 
+echo Installing typings.
 # 4. Install typings
 if [ -e "$DEPLOYMENT_SOURCE/typings.json" ]; then
   eval $NPM_CMD install typings
@@ -124,6 +125,7 @@ if [ -e "$DEPLOYMENT_SOURCE/typings.json" ]; then
   exitWithMessageOnError "typings failed"
 fi
 
+echo Grunt build.
 # 5. Run grunt
 if [ -e "$DEPLOYMENT_SOURCE/Gruntfile.js" ]; then
   eval $NPM_CMD install grunt-cli
@@ -132,6 +134,7 @@ if [ -e "$DEPLOYMENT_SOURCE/Gruntfile.js" ]; then
   exitWithMessageOnError "grunt failed"
 fi
 
+echo Gulp build.
 # 6. Run gulp
 if [ -e "$DEPLOYMENT_SOURCE/gulpfile.js" ]; then
   eval $NPM_CMD install gulp-cli
@@ -140,6 +143,7 @@ if [ -e "$DEPLOYMENT_SOURCE/gulpfile.js" ]; then
   exitWithMessageOnError "gulp failed"
 fi
 
+echo Kudusync.
 # 7. KuduSync to Target
 if [[ "$IN_PLACE_DEPLOYMENT" -ne "1" ]]; then 
   "$KUDU_SYNC_CMD" -v 50 -f "$DEPLOYMENT_SOURCE/lib" -t "$DEPLOYMENT_TARGET" -n "$NEXT_MANIFEST_PATH" -p "$PREVIOUS_MANIFEST_PATH" -i ".git;.hg;.deployment;deploy.sh;*.d.ts" 
