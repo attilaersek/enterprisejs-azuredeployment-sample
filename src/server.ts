@@ -1,27 +1,33 @@
 import { Request, Response} from 'express';
-import { Visitor } from './visitor';
 import * as express from 'express';
+import appInsights = require('applicationinsights');
+import { createFilter } from 'odata-v4-inmemory';
 
+var start = +new Date;
 const app = express();
 const port = process.env.PORT || 1337;
+var instrumentation: boolean = false;
+
+if(!!process.env.APPINSIGHTS_KEY) {
+  appInsights.setup(process.env.APPINSIGHTS_KEY).start();
+  instrumentation = true;
+}
 
 app.get('/api/products', (req: Request, res: Response) => {
-  const visitor = new Visitor();
-  const ast = Visitor.buildAst(req.query.$filter);
-  res.json({
-    'result': ast
-  });
+   let data = require('../data/products.json').value;
+   if (req.query.$filter) {
+     const filterFn = createFilter(req.query.$filter);
+     data = data.filter(filterFn);
+   }
+   res.json(data);
 });
 
-app.get('/odata/products', (req: Request, res: Response) => {
-  const visitor = new Visitor();
-  const filter = Visitor.buildFilterFunction(req.query.$filter);
-
-  res.json({
-    'result': filter.toString()
-  });
-});
-
-app.listen(port, () => {
-    console.log(`service listing in ${port}`);
+var server = app.listen(port, function() {
+    var port = server.address().port;
+    var end = +new Date;
+    var duration = end - start;
+    console.log('This express app is listening on port:' + port);
+    if(instrumentation === true) {
+        appInsights.client.trackMetric('StartupTime', duration);
+    }
 });

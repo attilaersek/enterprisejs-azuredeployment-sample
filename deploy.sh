@@ -125,6 +125,12 @@ if [ -e "$DEPLOYMENT_SOURCE/typings.json" ]; then
   exitWithMessageOnError "typings failed"
 fi
 
+echo flatten packages
+eval $NPM_CMD install flatten-packages
+exitWithMessageOnError "installing flatten-packages failed"
+./node_modules/.bin/flatten-packages
+exitWithMessageOnError "flatten-packages"
+
 echo Grunt build.
 # 5. Run grunt
 if [ -e "$DEPLOYMENT_SOURCE/Gruntfile.js" ]; then

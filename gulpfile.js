@@ -114,4 +114,4 @@ gulp.task('watch', 'Watches ts source files and runs build on change', function 
   gulp.watch('src/**/*.ts', ['build']);
 });
 
-gulp.task('default', ['browser-sync']);
+gulp.task('default', gulpSequence('build', 'browser-sync'));
