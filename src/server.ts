@@ -15,7 +15,7 @@ if(!!process.env.APPINSIGHTS_KEY) {
 var app = express();
 
 var renderIndex = (req: Request, res: Response) => {
-    res.status(200).send('Hello, World!');
+    res.status(200).send('Hello, CorpJs MeetUp!');
 };
 
 app.get('/*', renderIndex);
